@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techy Pacman</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="hud">
+            <div class="score-container">Score: <span id="score">0</span></div>
+            <div class="lives-container">Lives: <span id="lives">3</span></div>
+        </div>
+        
+        <canvas id="gameCanvas"></canvas>
+        
+        <div class="controls">
+            <button id="playBtn" class="control-btn">Play</button>
+            <button id="pauseBtn" class="control-btn">Pause</button>
+            <button id="restartBtn" class="control-btn">Restart</button>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="startScreen" class="overlay">
+            <div class="overlay-content">
+                <h1>PACMAN</h1>
+                <button id="startBtn" class="control-btn">Start Game</button>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="overlay hidden">
+            <div class="overlay-content">
+                <h2>Game Over</h2>
+                <p>Final Score: <span id="finalScore">0</span></p>
+                <button id="restartGameBtn" class="control-btn">Play Again</button>
+            </div>
+        </div>
+
+        <!-- Mobile Controls -->
+        <div class="mobile-controls">
+            <div class="d-pad">
+                <button id="upBtn" class="d-pad-btn up">↑</button>
+                <button id="leftBtn" class="d-pad-btn left">←</button>
+                <button id="rightBtn" class="d-pad-btn right">→</button>
+                <button id="downBtn" class="d-pad-btn down">↓</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
