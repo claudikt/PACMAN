@@ -59,6 +59,7 @@ class Pacman {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.tileSize = 20;
+        this.scale = 1; // Default scale factor
         this.score = 0;
         this.lives = 3;
         this.gameOver = false;
@@ -70,6 +71,9 @@ class Pacman {
         // Event listeners
         document.addEventListener('keydown', this.handleKeyPress.bind(this));
         this.setupControls();
+        
+        // Add window resize handler for responsiveness
+        window.addEventListener('resize', this.handleResize.bind(this));
         
         // Game loop with improved timing but lower FPS for slower gameplay
         this.lastTime = 0;
@@ -849,10 +853,37 @@ class Pacman {
         }
     }
 
+    handleResize() {
+        // Recalculate dimensions when window is resized
+        if (this.map) {
+            const baseWidth = this.map[0].length * this.tileSize;
+            const baseHeight = this.map.length * this.tileSize;
+            
+            const containerWidth = this.canvas.parentElement.clientWidth - 30;
+            
+            if (baseWidth > containerWidth) {
+                const scale = containerWidth / baseWidth;
+                this.canvas.width = containerWidth;
+                this.canvas.height = baseHeight * scale;
+                this.scale = scale;
+            } else {
+                this.canvas.width = baseWidth;
+                this.canvas.height = baseHeight;
+                this.scale = 1;
+            }
+        }
+    }
+    
     draw() {
         if (this.gameOver) return;
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Apply scaling if needed
+        if (this.scale !== 1) {
+            this.ctx.save();
+            this.ctx.scale(this.scale, this.scale);
+        }
         
         // Draw map
         this.drawMap();
@@ -1000,6 +1031,11 @@ class Pacman {
         
         // Draw pause overlay if paused with scanlines effect
         if (this.paused) {
+            // For pause overlay, restore scale to ensure it covers the entire canvas
+            if (this.scale !== 1) {
+                this.ctx.restore();
+            }
+            
             // Semi-transparent overlay
             this.ctx.fillStyle = 'rgba(8, 8, 33, 0.7)';
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -1014,8 +1050,11 @@ class Pacman {
             const pauseTextX = this.canvas.width/2;
             const pauseTextY = this.canvas.height/2;
             
+            // Adjust font size based on canvas width
+            const fontSize = Math.max(16, Math.min(30, this.canvas.width / 15));
+            
             // Text shadow/glow
-            this.ctx.font = '30px "Press Start 2P", cursive';
+            this.ctx.font = `${fontSize}px "Press Start 2P", cursive`;
             this.ctx.textAlign = 'center';
             this.ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
             this.ctx.fillText('PAUSED', pauseTextX + 2, pauseTextY + 2);
@@ -1030,6 +1069,9 @@ class Pacman {
             
             // Reset alignment
             this.ctx.textAlign = 'start';
+        } else if (this.scale !== 1) {
+            // Restore scale if we modified it and aren't paused
+            this.ctx.restore();
         }
     }
 
@@ -1097,9 +1139,27 @@ class Pacman {
     }
 
     startGame() {
-        // Set canvas dimensions based on map size
-        this.canvas.width = this.map[0].length * this.tileSize;
-        this.canvas.height = this.map.length * this.tileSize;
+        // Calculate base canvas dimensions
+        const baseWidth = this.map[0].length * this.tileSize;
+        const baseHeight = this.map.length * this.tileSize;
+        
+        // Check if we need to scale down for mobile
+        const containerWidth = this.canvas.parentElement.clientWidth - 30; // Accounting for padding
+        
+        if (baseWidth > containerWidth) {
+            // Calculate scaling factor
+            const scale = containerWidth / baseWidth;
+            // Apply scaling while maintaining aspect ratio
+            this.canvas.width = containerWidth;
+            this.canvas.height = baseHeight * scale;
+            // Store the scale for drawing
+            this.scale = scale;
+        } else {
+            // Use original dimensions
+            this.canvas.width = baseWidth;
+            this.canvas.height = baseHeight;
+            this.scale = 1;
+        }
         
         // Reset game state
         this.gameOver = false;
