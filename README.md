@@ -1,2 +1,2 @@
 # PACMAN
-pacman game developed by me
+pacman game developed by Pranav
