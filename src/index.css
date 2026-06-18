@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+    --primary-neon: #00f3ff;
+    --secondary-neon: #ff007f;
+    --tertiary-neon: #00ff88;
+    --hack-freeze: #00ffff;
+    --hack-turbo: #ff7700;
+    --hack-invis: #b300ff;
+    --bg-dark: #050517;
+    --bg-panel: rgba(13, 14, 38, 0.75);
+    --bg-glass: rgba(13, 14, 38, 0.45);
+    
+    --glow-cyan: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.2);
+    --glow-magenta: 0 0 10px rgba(255, 0, 127, 0.5), 0 0 20px rgba(255, 0, 127, 0.2);
+    --glow-green: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background: radial-gradient(circle at center, #0e0e33 0%, #030310 100%);
+    color: #ffffff;
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #050517;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--primary-neon);
+    border-radius: 3px;
+}
+
+/* Animations */
+@keyframes glitch {
+    0% { transform: translate(0) }
+    20% { transform: translate(-2px, 2px) }
+    40% { transform: translate(-2px, -2px) }
+    60% { transform: translate(2px, 2px) }
+    80% { transform: translate(2px, -2px) }
+    100% { transform: translate(0) }
+}
+
+@keyframes pulse-neon {
+    0%, 100% {
+        box-shadow: 0 0 10px var(--primary-neon), inset 0 0 10px var(--primary-neon);
+    }
+    50% {
+        box-shadow: 0 0 20px var(--primary-neon), inset 0 0 15px var(--primary-neon);
+    }
+}
+
+/* Cyberpunk App Wrapper Layout */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.title-section {
+    text-align: center;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.glitch-title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    letter-spacing: 6px;
+    color: #fff;
+    text-shadow: 3px 3px 0 var(--secondary-neon), -3px -3px 0 var(--primary-neon);
+    animation: glitch 3s infinite alternate-reverse;
+}
+
+.subtitle {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.65rem;
+    color: var(--primary-neon);
+    letter-spacing: 2px;
+    margin-top: 5px;
+    text-transform: uppercase;
+}
+
+/* Cyber Glassmorphism Panels */
+.cyber-panel {
+    background: var(--bg-panel);
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cyber-panel:hover {
+    border-color: rgba(0, 243, 255, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), var(--glow-cyan);
+}
+
+/* Cyber buttons */
+.cyber-btn {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid var(--primary-neon);
+    padding: 10px 16px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.cyber-btn:hover {
+    background: var(--primary-neon);
+    color: #000;
+    box-shadow: var(--glow-cyan);
+    text-shadow: none;
+    transform: translateY(-2px);
+}
+
+.cyber-btn:active {
+    transform: translateY(1px);
+}
+
+.cyber-btn.accent {
+    border-color: var(--secondary-neon);
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(255, 0, 127, 0.5);
+}
+
+.cyber-btn.accent:hover {
+    background: var(--secondary-neon);
+    color: #fff;
+    box-shadow: var(--glow-magenta);
+}
+
+/* HUD elements */
+.hud-card {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.75rem;
+    padding: 12px 18px;
+    text-align: center;
+}
+
+/* D-pad and Controller styling */
+.dpad-container {
+    width: 140px;
+    height: 140px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.dpad-btn {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    background: rgba(13, 14, 38, 0.85);
+    border: 1px solid var(--primary-neon);
+    border-radius: 8px;
+    color: var(--primary-neon);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.dpad-btn:hover {
+    background: var(--primary-neon);
+    color: #000;
+    box-shadow: var(--glow-cyan);
+}
+
+.dpad-btn.up { top: 5px; left: 49px; }
+.dpad-btn.down { bottom: 5px; left: 49px; }
+.dpad-btn.left { left: 5px; top: 49px; }
+.dpad-btn.right { right: 5px; top: 49px; }
+
+/* Grid layout for Main App Dashboard */
+.game-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 390px;
+    gap: 20px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+@media (max-width: 900px) {
+    .game-grid-layout {
+        grid-template-columns: 1fr;
+    }
+}
